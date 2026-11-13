@@ -1,0 +1,84 @@
+﻿C:\tp18-grpc> grpcurl -plaintext localhost:9090 list
+CompteService
+grpc.health.v1.Health
+grpc.reflection.v1alpha.ServerReflection
+
+C:\tp18-grpc> grpcurl -plaintext localhost:9090 list CompteService
+CompteService.AllComptes
+CompteService.CompteById
+CompteService.SaveCompte
+CompteService.TotalSolde
+
+C:\tp18-grpc> grpcurl -plaintext -d '{"compte":{"solde":1500.5,"dateCreation":"2026-11-13","type":"COURANT"}}' localhost:9090 CompteService/SaveCompte
+{
+  "compte": {
+    "id": "d768df28-0f7c-4bf9-80f4-a0bffeb5fca2",
+    "solde": 1500.5,
+    "dateCreation": "2026-11-13"
+  }
+}
+
+C:\tp18-grpc> grpcurl -plaintext -d '{"compte":{"solde":8000,"dateCreation":"2026-11-13","type":"EPARGNE"}}' localhost:9090 CompteService/SaveCompte
+{
+  "compte": {
+    "id": "7a2cb911-079c-4c16-ac5f-6dd7bbaa530d",
+    "solde": 8000,
+    "dateCreation": "2026-11-13",
+    "type": "EPARGNE"
+  }
+}
+
+C:\tp18-grpc> grpcurl -plaintext -d '{"compte":{"solde":250.75,"dateCreation":"2026-11-13","type":"COURANT"}}' localhost:9090 CompteService/SaveCompte
+{
+  "compte": {
+    "id": "589e289f-e3c4-47e7-b015-e55384888005",
+    "solde": 250.75,
+    "dateCreation": "2026-11-13"
+  }
+}
+
+C:\tp18-grpc> grpcurl -plaintext -d '{}' localhost:9090 CompteService/AllComptes
+{
+  "comptes": [
+    {
+      "id": "d768df28-0f7c-4bf9-80f4-a0bffeb5fca2",
+      "solde": 1500.5,
+      "dateCreation": "2026-11-13"
+    },
+    {
+      "id": "7a2cb911-079c-4c16-ac5f-6dd7bbaa530d",
+      "solde": 8000,
+      "dateCreation": "2026-11-13",
+      "type": "EPARGNE"
+    },
+    {
+      "id": "589e289f-e3c4-47e7-b015-e55384888005",
+      "solde": 250.75,
+      "dateCreation": "2026-11-13"
+    }
+  ]
+}
+
+C:\tp18-grpc> grpcurl -plaintext -d '{}' localhost:9090 CompteService/TotalSolde
+{
+  "stats": {
+    "count": 3,
+    "sum": 9751.25,
+    "average": 3250.4167
+  }
+}
+
+C:\tp18-grpc> grpcurl -plaintext -d '{"id":"7a2cb911-079c-4c16-ac5f-6dd7bbaa530d"}' localhost:9090 CompteService/CompteById
+{
+  "compte": {
+    "id": "7a2cb911-079c-4c16-ac5f-6dd7bbaa530d",
+    "solde": 8000,
+    "dateCreation": "2026-11-13",
+    "type": "EPARGNE"
+  }
+}
+
+C:\tp18-grpc> grpcurl -plaintext -d '{"id":"00000000-0000-0000-0000-000000000000"}' localhost:9090 CompteService/CompteById
+ERROR:
+  Code: NotFound
+  Message: Compte non trouvé : 00000000-0000-0000-0000-000000000000
